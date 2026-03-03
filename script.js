@@ -10,6 +10,9 @@ function searchPokemon(toSearch) {
     spinner.classList.remove("hidden");
     errorMessage.classList.add("hidden");
     setTimeout(() => {
+        if (toSearch === "pokeMo") { //TODO: Add easter egg
+        }
+
         fetch(`https://pokeapi.co/api/v2/pokemon/${toSearch}`)
             .then(response => {
                 spinner.classList.add("hidden");
@@ -48,5 +51,4 @@ function renderPokemon(data) {
     pokemonImage.src = pokemon.sprites;
     pokemonDescription.textContent = `ID: ${pokemon.id}, Weight: ${pokemon.weight}, Height: ${pokemon.height}`;
     pokemonCard.classList.remove("hidden");
-    // spinner.classList.add("hidden");
 }
