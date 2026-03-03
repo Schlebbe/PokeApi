@@ -43,12 +43,19 @@ function renderPokemon(data) {
         name: data.name,
         id: data.id,
         sprites: data.sprites.front_default,
-        weight: data.weight,
-        height: data.height
+        weight: data.weight / 10,
+        height: data.height * 10,
+        types: data.types.map(typeInfo =>  {
+            return capitalizeFirstLetter(typeInfo.type.name);
+        }).join(", ")
     }
 
     pokemonName.textContent = pokemon.name;
     pokemonImage.src = pokemon.sprites;
-    pokemonDescription.textContent = `ID: ${pokemon.id}, Weight: ${pokemon.weight}, Height: ${pokemon.height}`;
+    pokemonDescription.textContent = `ID: ${pokemon.id}, Weight: ${pokemon.weight} kg, Height: ${pokemon.height} cm, Types: ${pokemon.types}`;
     pokemonCard.classList.remove("hidden");
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
