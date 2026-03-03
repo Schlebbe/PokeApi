@@ -32,7 +32,9 @@ function searchPokemon(toSearch) {
             let pokemon = {
                 name: "Mo",
                 id: "???",
-                sprites: 'https://ca.slack-edge.com/T4WV23X5X-U07KP4RK281-9711ee434489-512',
+                sprites: {
+                    front_default: 'https://ca.slack-edge.com/T4WV23X5X-U07KP4RK281-9711ee434489-512'
+                },
                 weight: "???",
                 height: "???",
                 types: typeInfo
