@@ -11,7 +11,37 @@ function searchPokemon(toSearch) {
     errorMessage.classList.add("hidden");
     setTimeout(() => {
         if (toSearch === "pokeMo") { //TODO: Add easter egg
+            typeInfo = [
+                {
+                    type: {
+                        name: "Teacher"
+                    }
+                },
+                {
+                    type: {
+                        name: "Student"
+                    }
+
+                },
+                {
+                    type: {
+                        name: "Demigod"
+                    }
+                }
+            ]
+            let pokemon = {
+                name: "Mo",
+                id: "???",
+                sprites: 'https://ca.slack-edge.com/T4WV23X5X-U07KP4RK281-9711ee434489-512',
+                weight: "???",
+                height: "???",
+                types: typeInfo
+            }
+            spinner.classList.add("hidden");
+            renderPokemon(pokemon);
+            return;
         }
+
 
         fetch(`https://pokeapi.co/api/v2/pokemon/${toSearch}`)
             .then(response => {
@@ -43,11 +73,12 @@ function renderPokemon(data) {
         name: data.name,
         id: data.id,
         sprites: data.sprites.front_default,
-        weight: data.weight / 10,
-        height: data.height * 10,
-        types: data.types.map(typeInfo =>  {
+        weight: data.weight !== "???" ? data.weight / 10 : "???",
+        height: data.height !== "???" ? data.height * 10 : "???",
+        types: data.types.map(typeInfo => {
             return capitalizeFirstLetter(typeInfo.type.name);
         }).join(", ")
+        
     }
 
     pokemonName.textContent = pokemon.name;
