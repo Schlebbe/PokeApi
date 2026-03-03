@@ -23,3 +23,8 @@ h1 {
     50% { transform: rotate(180deg) scale(1.5); }
     100% { transform: rotate(360deg) scale(1); }
 }
+
+#pokemonImage{
+    filter: drop-shadow(0 0 15px rgb(255, 255, 255))
+          drop-shadow(0 0 30px rgb(255, 255, 255));
+}
