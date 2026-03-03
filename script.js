@@ -1,3 +1,4 @@
+const githubApiKey = window.APP_CONFIG?.GITHUB_API_KEY;
 const spinner = document.getElementById("loadingSpinner");
 const pokemonCard = document.getElementById("pokemonCard");
 const pokemonName = document.getElementById("pokemonName");
@@ -5,7 +6,18 @@ const pokemonImage = document.getElementById("pokemonImage");
 const pokemonDescription = document.getElementById("pokemonDescription");
 const errorMessage = document.getElementById("errorMessage");
 const errorText = document.getElementById("errorText");
-const githubApiKey = window.APP_CONFIG?.GITHUB_API_KEY;
+const pokemonModalLabel = document.getElementById("pokemonModalLabel");
+const pokemonModalTypes = document.getElementById("pokemonModalTypes");
+const pokemonModalAbilities = document.getElementById("pokemonModalAbilities");
+const pokemonModalStatsHp = document.getElementById("pokemonModalStatsHp");
+const pokemonModalHpBar = document.getElementById("pokemonModalHpBar");
+const pokemonModalStatsAttack = document.getElementById("pokemonModalStatsAttack");
+const pokemonModalAttackBar = document.getElementById("pokemonModalAttackBar");
+const pokemonModalStatsDefense = document.getElementById("pokemonModalStatsDefense");
+const pokemonModalDefenseBar = document.getElementById("pokemonModalDefenseBar");
+const pokemonModalHeight = document.getElementById("pokemonModalHeight");
+const pokemonModalWeight = document.getElementById("pokemonModalWeight");
+const pokemonModalImage = document.getElementById("pokemonModalImage");
 
 // Your Pokémon type colors enum
 const PokemonTypeColors = Object.freeze({
@@ -63,7 +75,7 @@ function searchPokemon(toSearch) {
                     }
                 }
             ]
-            
+
             let pokemon = {
                 name: "Mo",
                 id: "???",
@@ -72,7 +84,19 @@ function searchPokemon(toSearch) {
                 },
                 weight: "???",
                 height: "???",
-                types: typeInfo
+                types: typeInfo,
+                stats: [
+                    { "base_stat": 45, "stat": { "name": "hp" } },
+                    { "base_stat": 49, "stat": { "name": "attack" } },
+                    { "base_stat": 49, "stat": { "name": "defense" } },
+                    { "base_stat": 65, "stat": { "name": "special-attack" } },
+                    { "base_stat": 65, "stat": { "name": "special-defense" } },
+                    { "base_stat": 45, "stat": { "name": "speed" } }
+                ],
+                abilities: [
+                    { ability: { name: 'Teach' } },
+                    { ability: { name: 'Inspire' } }
+                ]
             }
             spinner.classList.add("hidden");
             renderPokemon(pokemon);
@@ -121,9 +145,58 @@ function renderPokemon(data) {
         height: data.height !== "???" ? data.height * 10 : "???",
         types: data.types.map(typeInfo => {
             return capitalizeFirstLetter(typeInfo.type.name);
-        }).join(", ")
+        }),
+        hp: data.stats.find(stat => stat.stat.name === "hp")?.base_stat || "???",
+        attack: data.stats.find(stat => stat.stat.name === "attack")?.base_stat || "???",
+        defense: data.stats.find(stat => stat.stat.name === "defense")?.base_stat || "???",
+        abilities: data.abilities.map(abilityInfo => {
+            return capitalizeFirstLetter(abilityInfo.ability.name);
+        })
+    };
 
-    }
+    pokemonModalLabel.textContent = pokemon.name;
+
+    pokemonModalTypes.innerHTML = ''; // clear
+
+    pokemon.types.forEach(type => {
+        const span = document.createElement('span');
+        span.className = 'badge me-1';
+        span.textContent = capitalizeFirstLetter(type);
+        span.style.backgroundColor = PokemonTypeColors[type.toLowerCase()] || '#777';
+        span.style.color = '#fff';
+        pokemonModalTypes.appendChild(span);
+    });
+
+    pokemon.types = pokemon.types.join(', ');
+
+    // Clear any existing items first
+    pokemonModalAbilities.innerHTML = '';
+
+    // Loop through abilities and create li elements
+    pokemon.abilities.forEach(ability => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item p-1';
+        li.textContent = ability;
+        pokemonModalAbilities.appendChild(li);
+    });
+
+    // Update HP stats
+    pokemonModalStatsHp.innerHTML = `<span>HP</span><span>${pokemon.hp}</span>`;
+    pokemonModalHpBar.style.width = `${pokemon.hp}%`;
+
+    // Update Attack stats
+    pokemonModalStatsAttack.innerHTML = `<span>Attack</span><span>${pokemon.attack}</span>`;
+    pokemonModalAttackBar.style.width = `${pokemon.attack}%`;
+
+    // Update Defense stats
+    pokemonModalStatsDefense.innerHTML = `<span>Defense</span><span>${pokemon.defense}</span>`;
+    pokemonModalDefenseBar.style.width = `${pokemon.defense}%`;
+
+    // Update Height and Weight
+    pokemonModalHeight.textContent = `Height: ${pokemon.height} cm`;
+    pokemonModalWeight.textContent = `Weight: ${pokemon.weight} kg`;
+
+    pokemonModalImage.src = pokemon.sprites;
 
     pokemonName.textContent = pokemon.name;
     pokemonImage.src = pokemon.sprites;
