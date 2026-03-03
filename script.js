@@ -167,7 +167,7 @@ async function generatePokemonDescription(pokemonName, pokemonData) {
                     content: `Generate a short, fun description for a Pokémon with these attributes: Name: ${pokemonData.name}, Weight: ${pokemonData.weight / 10} kg, Height: ${pokemonData.height * 10} cm, Types: ${pokemonData.types.map(t => t.type.name).join(', ')}.`
                 }
             ],
-            model: 'gpt-5',
+            model: 'gpt-4o-mini',
         })
     });
 
