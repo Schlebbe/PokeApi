@@ -6,6 +6,13 @@ const pokemonDescription = document.getElementById("pokemonDescription");
 const errorMessage = document.getElementById("errorMessage");
 const errorText = document.getElementById("errorText");
 
+// Bootstrap 5 toast requires initialization
+document.addEventListener('DOMContentLoaded', () => {
+    const toastEl = document.getElementById('pokemonToast');
+    const toast = new bootstrap.Toast(toastEl, { delay: 5000 });
+    toast.show();
+});
+
 function searchPokemon(toSearch) {
     pokemonCard.classList.add("hidden");
     spinner.classList.remove("hidden");

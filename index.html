@@ -11,6 +11,7 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://db.onlinewebfonts.com/c/6120639772c6c60a2fad6742051c6feb?family=Unown" rel="stylesheet">
 </head>
 
 <body>
@@ -21,7 +22,7 @@
             <div class="col-md-6">
                 <form onsubmit="event.preventDefault(); searchPokemon(searchInput.value || 'pikachu')">
                     <div class="input-group shadow-sm">
-                        <input type="text" id="searchInput" class="form-control" placeholder="Search for a Pokémon"
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search for a Pokemon"
                             aria-label="Search for a Pokémon">
                         <button type="submit" class="btn btn-primary" id="searchButton">
                             Search
@@ -72,6 +73,24 @@
         <div class="d-flex justify-content-center">
             <div class="spinner-border text-primary hidden" role="status" id="loadingSpinner">
                 <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+            <div class="toast" id="pokemonToast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-body" style="font-family: 'Unown', sans-serif; min-width: 250px;">
+                    Are you a Pokemon?
+                    <div class="mt-2 pt-2 border-top d-flex justify-content-end">
+                        <button type="button" class="btn btn-primary btn-sm me-2" data-bs-dismiss="toast"
+                            onclick="document.body.style.fontFamily = 'Unown', sans-serif;">
+                            Yes
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">
+                            No
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
