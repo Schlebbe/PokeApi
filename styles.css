@@ -11,3 +11,15 @@ h1 {
     font-family: "Zen Dots", cursive;
     margin-bottom: 2rem;
 }
+
+.pokespinner {
+    width: 3em;
+    height: 3em;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.5); }
+    100% { transform: rotate(360deg) scale(1); }
+}

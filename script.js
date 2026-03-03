@@ -73,7 +73,7 @@ function searchPokemon(toSearch) {
                 document.getElementById("errorMessage").classList.remove("hidden");
                 errorText.textContent = `There is no Pokémon with name ${toSearch}.`;
             });
-    }, 1000);
+    }, 2500);
 }
 
 function renderPokemon(data) {
