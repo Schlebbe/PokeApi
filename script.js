@@ -6,6 +6,31 @@ const pokemonDescription = document.getElementById("pokemonDescription");
 const errorMessage = document.getElementById("errorMessage");
 const errorText = document.getElementById("errorText");
 
+// Your Pokémon type colors enum
+const PokemonTypeColors = Object.freeze({
+    normal: '#A8A77A',
+    fire: '#EE8130',
+    water: '#6390F0',
+    electric: '#F7D02C',
+    grass: '#7AC74C',
+    ice: '#96D9D6',
+    fighting: '#C22E28',
+    poison: '#A33EA1',
+    ground: '#E2BF65',
+    flying: '#A98FF3',
+    psychic: '#F95587',
+    bug: '#A6B91A',
+    rock: '#B6A136',
+    ghost: '#735797',
+    dragon: '#6F35FC',
+    dark: '#705746',
+    steel: '#B7B7CE',
+    fairy: '#D685AD',
+    teacher: '#FFFF00', // Custom type for the easter egg
+    student: '#FF0000', // Custom type for the easter egg
+    demigod: '#0000FF', // Custom type for the easter egg
+});
+
 // Bootstrap 5 toast requires initialization
 document.addEventListener('DOMContentLoaded', () => {
     const toastEl = document.getElementById('pokemonToast');
@@ -18,24 +43,26 @@ function searchPokemon(toSearch) {
     spinner.classList.remove("hidden");
     errorMessage.classList.add("hidden");
     setTimeout(() => {
+        errorMessage.classList.add("hidden");
         if (toSearch === "pokeMo") { //TODO: Add easter egg
             typeInfo = [
                 {
                     type: {
-                        name: "Teacher"
+                        name: "teacher"
                     }
                 },
                 {
                     type: {
-                        name: "Student"
+                        name: "student"
                     }
                 },
                 {
                     type: {
-                        name: "Demigod"
+                        name: "demigod"
                     }
                 }
             ]
+            
             let pokemon = {
                 name: "Mo",
                 id: "???",
@@ -50,7 +77,6 @@ function searchPokemon(toSearch) {
             renderPokemon(pokemon);
             return;
         }
-
 
         fetch(`https://pokeapi.co/api/v2/pokemon/${toSearch}`)
             .then(response => {
@@ -93,8 +119,18 @@ function renderPokemon(data) {
     pokemonImage.src = pokemon.sprites;
     pokemonDescription.textContent = `ID: ${pokemon.id}, Weight: ${pokemon.weight} kg, Height: ${pokemon.height} cm, Types: ${pokemon.types}`;
     pokemonCard.classList.remove("hidden");
+    applyTypeShadow(pokemonImage, data.types.map(t => t.type.name));
 }
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function applyTypeShadow(imgEl, types) {
+    if (!types || types.length === 0) return;
+    imgEl.style.filter = '';
+
+    types.forEach(type => {
+        imgEl.style.filter += `drop-shadow(0 4px 25px ${PokemonTypeColors[type]})`;
+    });
 }
