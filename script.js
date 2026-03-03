@@ -1,9 +1,10 @@
-let spinner = document.getElementById("loadingSpinner");
-let pokemonCard = document.getElementById("pokemonCard");
-let pokemonName = document.getElementById("pokemonName");
-let pokemonImage = document.getElementById("pokemonImage");
-let pokemonDescription = document.getElementById("pokemonDescription");
-let errorMessage = document.getElementById("errorMessage");
+const spinner = document.getElementById("loadingSpinner");
+const pokemonCard = document.getElementById("pokemonCard");
+const pokemonName = document.getElementById("pokemonName");
+const pokemonImage = document.getElementById("pokemonImage");
+const pokemonDescription = document.getElementById("pokemonDescription");
+const errorMessage = document.getElementById("errorMessage");
+const errorText = document.getElementById("errorText");
 
 function searchPokemon(toSearch) {
     pokemonCard.classList.add("hidden");
@@ -21,7 +22,6 @@ function searchPokemon(toSearch) {
                     type: {
                         name: "Student"
                     }
-
                 },
                 {
                     type: {
@@ -63,9 +63,8 @@ function searchPokemon(toSearch) {
 
             })
             .catch(error => {
-                console.error('Error fetching data:', error);
                 document.getElementById("errorMessage").classList.remove("hidden");
-                errorMessage.textContent = `There is no Pokémon with name ${toSearch}. Check Spelling and try again.`;
+                errorText.textContent = `There is no Pokémon with name ${toSearch}.`;
             });
     }, 1000);
 }
@@ -80,7 +79,7 @@ function renderPokemon(data) {
         types: data.types.map(typeInfo => {
             return capitalizeFirstLetter(typeInfo.type.name);
         }).join(", ")
-        
+
     }
 
     pokemonName.textContent = pokemon.name;

@@ -32,14 +32,21 @@
         </div>
 
         <!-- Error message -->
-        <div class="card hidden" id="errorMessage">
-            <div class="card-body">
-                There is no Pokémon with that name. Check Spelling and try again.
+        <div id="errorMessage" class="alert alert-danger alert-dismissible fade show hidden text-center shadow-sm"
+            role="alert">
+            <div id="errorText">
+                Oops! There is no Pokémon with that name.
             </div>
+            <br>
+            <small class="text-muted">Check the spelling and try again.</small>
+
+            <button type="button" class="btn-close" aria-label="Close"
+                onclick="this.parentElement.classList.add('hidden')">
+            </button>
         </div>
 
         <!-- Card -->
-        <div class="row justify-content-center hidden" id="pokemonCard" >
+        <div class="row justify-content-center hidden" id="pokemonCard">
             <div class="col-md-4">
                 <div class="card shadow-sm h-100 text-center">
 
