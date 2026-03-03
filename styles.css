@@ -6,3 +6,8 @@
 body{
     font-size: 1.4em;
 }
+
+h1 {
+    font-family: "Zen Dots", cursive;
+    margin-bottom: 2rem;
+}
