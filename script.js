@@ -5,6 +5,7 @@ const pokemonImage = document.getElementById("pokemonImage");
 const pokemonDescription = document.getElementById("pokemonDescription");
 const errorMessage = document.getElementById("errorMessage");
 const errorText = document.getElementById("errorText");
+const githubApiKey = window.APP_CONFIG?.GITHUB_API_KEY;
 
 // Your Pokémon type colors enum
 const PokemonTypeColors = Object.freeze({
@@ -90,6 +91,15 @@ function searchPokemon(toSearch) {
 
                 response.json().then(data => {
                     renderPokemon(data);
+
+                    generatePokemonDescription(data.name, data)
+                        .then(description => {
+                            document.getElementById("pokemonSummary").textContent = description;
+                        })
+                        .catch(error => {
+                            console.error("Error generating AI summary:", error);
+                            document.getElementById("pokemonSummary").textContent = "Failed to generate AI summary.";
+                        });
                 });
 
                 return pokemon;
@@ -133,4 +143,50 @@ function applyTypeShadow(imgEl, types) {
     types.forEach(type => {
         imgEl.style.filter += `drop-shadow(0 4px 25px ${PokemonTypeColors[type]})`;
     });
+}
+
+async function generatePokemonDescription(pokemonName, pokemonData) {
+    if (!githubApiKey) {
+        return "No AI summary available. Add your key in config.local.js.";
+    }
+
+    const response = await fetch('https://models.inference.ai.azure.com/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${githubApiKey}`
+        },
+        body: JSON.stringify({
+            messages : [
+                {
+                    role: 'system',
+                    content: 'You are a helpful assistant that generates a description for a Pokémon based on its name, weight, height, and types.'
+                },
+                {
+                    role: 'user',
+                    content: `Generate a short, fun description for a Pokémon with these attributes: Name: ${pokemonData.name}, Weight: ${pokemonData.weight / 10} kg, Height: ${pokemonData.height * 10} cm, Types: ${pokemonData.types.map(t => t.type.name).join(', ')}.`
+                }
+            ],
+            model: 'gpt-5',
+        })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        const errorMsg = data?.error?.message || JSON.stringify(data);
+        console.error("AI summary request failed. Status:", response.status);
+        console.error("Error details:", errorMsg);
+        return `AI summary unavailable: ${errorMsg}`;
+    }
+
+    const summary = data?.choices?.[0]?.message?.content;
+
+    if (!summary) {
+        console.error("Unexpected AI response format:", data);
+        return "AI summary unavailable right now.";
+    }
+
+    console.log("AI summary:", summary);
+    return summary;
 }
